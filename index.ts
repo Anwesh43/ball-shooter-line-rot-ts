@@ -209,3 +209,25 @@ class BallShooterLine {
         this.curr.startUpdating(cb)
     }
 }
+
+class Renderer {
+
+    bsl : BallShooterLine = new BallShooterLine()
+    animator : Animator = new Animator()
+
+    render(context : CanvasRenderingContext2D) {
+        this.bsl.draw(context)
+    }
+
+    handleTap(cb : Function) {
+        this.bsl.startUpdating(() => {
+            this.animator.start(() => {
+                cb()
+                this.bsl.update(() => {
+                    this.animator.stop()
+                    cb()
+                })
+            })
+        })
+    }
+}
